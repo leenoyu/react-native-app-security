@@ -10,12 +10,22 @@ public class RNASAppLifecycleDelegate: ExpoAppDelegateSubscriber {
         return window
     }()
 
-    public func applicationDidFinishLaunching(_ application: UIApplication) {
-        if(!isPreventRecentScreenshotsEnabled()) {
-            return
+    public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        if(isPreventRecentScreenshotsEnabled()) {
+            application.ignoreSnapshotOnNextApplicationLaunch()
         }
-        
-        application.ignoreSnapshotOnNextApplicationLaunch()
+
+        if(isDisablingCacheEnabled()){
+            clearAndDisableCache()
+        }
+
+
+        return true
+    }
+
+    private func clearAndDisableCache() {
+        URLCache.shared.removeAllCachedResponses()
+        URLCache.shared = URLCache(memoryCapacity: 0, diskCapacity: 0, diskPath: nil)
     }
     
     public func applicationWillResignActive(_ application: UIApplication) {
@@ -41,3 +51,9 @@ func isPreventRecentScreenshotsEnabled() -> Bool {
     return false
 }
 
+func isDisablingCacheEnabled() -> Bool {
+    if let value = Bundle.main.object(forInfoDictionaryKey: "RNAS_DISABLE_CACHE") as? Bool {
+        return value
+    }
+    return false
+}
