@@ -8,20 +8,6 @@ import { RNASConfig } from "./types";
 type Props = RNASConfig["preventRecentScreenshots"];
 
 const withpreventRecentScreenshots: ConfigPlugin<Props> = (config, props) => {
-  config = withInfoPlist(config, (config) => {
-    const infoPlist = config.modResults;
-
-    const isEnabled = props?.ios?.enabled ?? false;
-
-    if (!isEnabled) {
-      delete infoPlist.RNAS_PREVENT_RECENT_SCREENSHOTS;
-      return config;
-    }
-
-    infoPlist.RNAS_PREVENT_RECENT_SCREENSHOTS = true;
-
-    return config;
-  });
 
   config = withGradleProperties(config, (config) => {
     const gradleProperties = config.modResults;
