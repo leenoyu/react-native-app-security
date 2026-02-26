@@ -1,7 +1,3 @@
-import RNASModule from "./RNASModule";
-import { SafeKeyboardDetectorInterface } from "./types";
+import { requireNativeModule } from "expo-modules-core";
 
-export const SafeKeyboardDetector: SafeKeyboardDetectorInterface = {
-  showInputMethodPicker: RNASModule.showInputMethodPicker,
-  getCurrentInputMethodInfo: RNASModule.getCurrentInputMethodInfo,
-};
+export default requireNativeModule("RNAS");
